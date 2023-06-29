@@ -1,0 +1,9 @@
+name: CustomRewards
+version: '${project.version}'
+main: org.cyci.mc.cstr.Registry
+api-version: 1.13
+prefix: CustomRewards
+depend: [ Analyse ]
+authors: [ Prisk ]
+description: Plan | sub plugin built for emenbee
+website: www.mc-em.com
