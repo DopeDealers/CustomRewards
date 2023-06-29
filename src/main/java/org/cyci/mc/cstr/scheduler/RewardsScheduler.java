@@ -43,27 +43,23 @@ public class RewardsScheduler extends BukkitRunnable {
     public void run() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             CompletableFuture<PlayerProfile> profileFuture = this.sdk.getPlayer(player.getUniqueId().toString());
-            profileFuture.thenAccept(profile -> {
+            profileFuture.thenAcceptAsync(profile -> {
                 int playerTotalSessionTime = profile.getTotalSessionTime();
                 User role = this.api.getPlayerAdapter(Player.class).getUser(player);
                 Player playerGet = Bukkit.getPlayer(profile.getUuid());
-                if (playerTotalSessionTime >= 14400 && role.getPrimaryGroup().equals("default") && !role.getPrimaryGroup().contains("member")) {
-                    InheritanceNode node = InheritanceNode.builder("Member").value(true).build();
-                    DataMutateResult result = role.data().add(node);
-                    this.api.getUserManager().saveUser(role);
-                    if (result.wasSuccessful()) {
-                        assert playerGet != null;
-                        playerGet.sendMessage(C.c(Lang.REWARD_GIVEN.getConfigValue(new String[]{"Member", Lang.PREFIX.getConfigValue(null)})));
-                    }
-                } else if (playerTotalSessionTime >= 259200 && role.getPrimaryGroup().equals("member") && !role.getPrimaryGroup().contains("veteran")) {
-                    InheritanceNode node = InheritanceNode.builder("Veteran").value(true).build();
-                    DataMutateResult result = role.data().add(node);
-                    this.api.getUserManager().saveUser(role);
-                    if (result.wasSuccessful()) {
-                        assert playerGet != null;
-                        playerGet.sendMessage(C.c(Lang.REWARD_GIVEN.getConfigValue(new String[]{"Veteran", Lang.PREFIX.getConfigValue(null)})));
-                    }
-                } else return;
+                if (!Objects.requireNonNull(playerGet).hasPermission("emenbee.donor.rewards")) {
+                    if (playerTotalSessionTime >= 14400 && role.getPrimaryGroup().equals("default") && !role.getPrimaryGroup().contains("member")) {
+                        InheritanceNode node = InheritanceNode.builder("Member").value(true).build();
+                        DataMutateResult result = role.data().add(node);
+                        this.api.getUserManager().saveUser(role);
+                        if (result.wasSuccessful()) playerGet.sendMessage(C.c(Lang.REWARD_GIVEN.getConfigValue(new String[]{"Member", Lang.PREFIX.getConfigValue(null)})));
+                    } else if (playerTotalSessionTime >= 259200 && role.getPrimaryGroup().equals("member") && !role.getPrimaryGroup().contains("veteran")) {
+                        InheritanceNode node = InheritanceNode.builder("Veteran").value(true).build();
+                        DataMutateResult result = role.data().add(node);
+                        this.api.getUserManager().saveUser(role);
+                        if (result.wasSuccessful()) playerGet.sendMessage(C.c(Lang.REWARD_GIVEN.getConfigValue(new String[]{"Veteran", Lang.PREFIX.getConfigValue(null)})));
+                    } else return;
+                }
             });
         });
     }
