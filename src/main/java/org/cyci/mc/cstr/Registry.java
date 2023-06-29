@@ -52,7 +52,7 @@ public final class Registry extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        
+
     }
     private void loadMessages() {
         Lang.setFile(this.messagesFile.getConfig());

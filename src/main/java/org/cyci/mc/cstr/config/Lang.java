@@ -10,8 +10,8 @@ import org.bukkit.configuration.file.FileConfiguration;
  * @created Wed - 28/Jun/2023 - 8:44 PM
  */
 public enum Lang {
-    PREFIX("message.prefix", "&bEmenbee &6&l>"),
-    REWARD_GIVEN("message.reward", "{1} you have been given the {0} rank");
+    PREFIX("message.prefix", "&b\u00a7b\u00a7o\uff25\uff2d \u00a7e\u00a7l\u003e"),
+    REWARD_GIVEN("message.reward", "{1} &7you have been given the {0} rank");
 
     private final String path;
 
