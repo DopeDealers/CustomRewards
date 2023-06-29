@@ -45,9 +45,7 @@ public class RewardsScheduler extends BukkitRunnable {
             CompletableFuture<PlayerProfile> profileFuture = this.sdk.getPlayer(player.getUniqueId().toString());
             profileFuture.thenAccept(profile -> {
                 int playerTotalSessionTime = profile.getTotalSessionTime();
-                List<PlayerProfile.Statistic> playerStatistics = profile.getStatistics();
                 User role = this.api.getPlayerAdapter(Player.class).getUser(player);
-                //User role = Objects.requireNonNull(this.api.getUserManager().getUser(profile.getUuid()));
                 Player playerGet = Bukkit.getPlayer(profile.getUuid());
                 if (playerTotalSessionTime >= 14400 && role.getPrimaryGroup().equals("default") && !role.getPrimaryGroup().contains("member")) {
                     InheritanceNode node = InheritanceNode.builder("Member").value(true).build();
