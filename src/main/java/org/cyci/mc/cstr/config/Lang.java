@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
  */
 public enum Lang {
     PREFIX("message.prefix", "&b\u00a7b\u00a7o\uff25\uff2d \u00a7e\u00a7l\u003e"),
-    REWARD_GIVEN("message.reward", "{1} &7you have been given the {0} rank");
+    REWARD_GIVEN("message.reward", "{1} &7You have been given the &b{0}&7 rank");
 
     private final String path;
 
