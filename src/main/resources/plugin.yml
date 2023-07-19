@@ -5,5 +5,9 @@ api-version: 1.13
 prefix: CustomRewards
 depend: [ Analyse ]
 authors: [ Prisk ]
-description: Plan | sub plugin built for emenbee
+description: Analyse | sub plugin built for emenbee
 website: www.mc-em.com
+
+commands:
+  playtime:
+    aliases: [usertime, hours, timeonserver, trolledtime]

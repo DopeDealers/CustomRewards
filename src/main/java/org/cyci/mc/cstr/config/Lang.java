@@ -11,6 +11,8 @@ import org.bukkit.configuration.file.FileConfiguration;
  */
 public enum Lang {
     PREFIX("message.prefix", "&b\u00a7b\u00a7o\uff25\uff2d \u00a7e\u00a7l\u003e"),
+    NO_PERM("messages.noperm", "{1} &7You do not have the&c {0} &7permission"),
+    PLAY_TIME("messages.playtime", "{1} &7Your playtime is {0}"),
     REWARD_GIVEN("message.reward", "{1} &7You have been given the &b{0}&7 rank");
 
     private final String path;
