@@ -4,6 +4,8 @@ import net.analyse.sdk.SDK;
 import net.analyse.sdk.platform.Platform;
 import net.analyse.sdk.request.response.PlayerProfile;
 import net.luckperms.api.LuckPerms;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,11 +32,23 @@ public class PlayTimeCmd extends CommandListener {
     public void execute(final CommandSender sender, final String[] args) {
         if (!(sender instanceof Player)) return;
 
-        CompletableFuture<PlayerProfile> profileFuture = Registry.getSdk().getPlayer(((Player) sender).getUniqueId().toString());
-        profileFuture.thenAcceptAsync(profile -> {
-            int playerTotalSessionTime = profile.getTotalSessionTime();
-            String timerFormat = Util.splitToComponentTimes(BigDecimal.valueOf(playerTotalSessionTime));
-            sender.sendMessage(C.c(Lang.PLAY_TIME.getConfigValue(new String[]{timerFormat, Lang.PREFIX.getConfigValue(null)})));
-        });
+        if (args.length == 0) {
+            CompletableFuture<PlayerProfile> profileFuture = Registry.getSdk().getPlayer(((Player) sender).getUniqueId().toString());
+            profileFuture.thenAcceptAsync(profile -> {
+                int playerTotalSessionTime = profile.getTotalSessionTime();
+                String timerFormat = Util.splitToComponentTimes(BigDecimal.valueOf(playerTotalSessionTime));
+                sender.sendMessage(C.c(Lang.PLAY_TIME.getConfigValue(new String[]{timerFormat, Lang.PREFIX.getConfigValue(null), sender.getName()})));
+            });
+        } else if (args.length != 0 && sender.hasPermission("emenbee.mod.playertime")) {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
+            if (player != null) {
+                CompletableFuture<PlayerProfile> profileFuture = Registry.getSdk().getPlayer(player.getUniqueId().toString());
+                profileFuture.thenAcceptAsync(profile -> {
+                    int playerTotalSessionTime = profile.getTotalSessionTime();
+                    String timerFormat = Util.splitToComponentTimes(BigDecimal.valueOf(playerTotalSessionTime));
+                    sender.sendMessage(C.c(Lang.PLAY_TIME.getConfigValue(new String[]{timerFormat, Lang.PREFIX.getConfigValue(null),  player.getName()})));
+                });
+            }
+        }
     }
 }
